@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Form</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.23.0/axios.min.js"></script>
+</head>
+<body>
+
+<form onsubmit="saveToServer(event)">
+  <label for="username">Name:</label>
+  <input id="username" type="text" name="username" required/>
+
+  <label for="email">Email:</label>
+  <input id="email" type="email" name="emailId" required/>
+
+  <label for="phonenumber">Phone Number:</label>
+  <input id="phonenumber" type="tel" name="phonenumber" required/>
+
+  <button type="submit">Submit</button>
+</form>
+
+<ul id="listofUsers"></ul>
+
+<script>
+  function saveToServer(event) {
+    event.preventDefault();
+
+    const username = event.target.username.value;
+    const email = event.target.emailId.value;
+    const phonenumber = event.target.phonenumber.value;
+
+    const Obj = {
+        name: username,
+        email: email,
+        phonenumber: phonenumber
+    };
+
+    axios.post("https://crudcrud.com/api/e966f25d69384d318bc091010d4b958a/AppointmentBookingApp", Obj)
+      .then((response) => {
+        showNewUserOnScreen(response.data);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  function showNewUserOnScreen(userData) {
+    const userList = document.getElementById('listofUsers');
+    const userItem = document.createElement('li');
+    userItem.textContent = `Name: ${userData.name}, Email: ${userData.email}, Phone Number: ${userData.phonenumber}`;
+    userList.appendChild(userItem);
+  }
+
+ 
+</script>
+
+</body>
+</html>
